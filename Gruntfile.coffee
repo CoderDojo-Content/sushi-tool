@@ -8,11 +8,11 @@ module.exports =  ->
           position: 'top'
           banner: "#!/usr/bin/env node --harmony"
         files:
-          src: [ 'lib/sushi-template.js' ]
+          src: [ 'lib/sushi-tool.js' ]
     coffee:
       compile:
         files:
-          'lib/sushi-template.js': 'src/sushi-template.coffee'
+          'lib/sushi-tool.js': 'src/sushi-tool.coffee'
       glob_to_multiple:
         expand: true
         flatten: false
@@ -24,7 +24,6 @@ module.exports =  ->
       coffee:
         files: 'src/**/*.coffee'
         tasks: ['build']
-
 
   @loadNpmTasks 'grunt-banner'
   @loadNpmTasks 'grunt-contrib-coffee'

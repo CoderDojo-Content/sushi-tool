@@ -1,15 +1,16 @@
 {
-  "name": "sushi-template",
+  "name": "sushi-tool",
   "version": "0.0.1",
   "description": "Tool to generate CoderDojo sushi templates",
-  "main": "lib/sushi-template.js",
+  "main": "lib/sushi-tool.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "MIT",
   "bin": {
-    "sushi-template": "./lib/sushi-template.js"
+    "sushi-tool": "./lib/sushi-tool.js",
+    "chopsticks": "./lib/sushi-tool.js"
   },
   "devDependencies": {
     "grunt-banner": "^0.6.0"
