@@ -1,0 +1,28 @@
+{
+  "name": "sushi-template",
+  "version": "0.0.1",
+  "description": "Tool to generate CoderDojo sushi templates",
+  "main": "lib/sushi-template.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "MIT",
+  "bin": {
+    "sushi-template": "./lib/sushi-template.js"
+  },
+  "devDependencies": {
+    "grunt-banner": "^0.6.0"
+  },
+  "dependencies": {
+    "async": "^2.0.1",
+    "color": "^0.11.3",
+    "colors": "^1.1.2",
+    "commander": "^2.9.0",
+    "i18n": "^0.8.3",
+    "inquirer": "^1.1.2",
+    "jsonfile": "^2.3.1",
+    "sprintf-js": "^1.0.3",
+    "sprintfjs": "^1.2.3"
+  }
+}

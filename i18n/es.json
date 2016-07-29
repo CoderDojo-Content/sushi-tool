@@ -1,0 +1,17 @@
+{
+	"newSushi": {
+		"series_title": "¿Cuál es el nombre de la serie de Sushi Cards?",
+		"language": "What programming language/technology is your sushi about?",
+		"difficulty": "What level of difficulty does your sushi have?",
+		"number": "How many cards are you going to create?",
+		"cards": {
+			"title_number": "Give the name to your sushi card number %d",
+			"title": "Título de la tarjeta:",
+			"filename": "Nombre del archivo (sin .md):"
+		}
+	},
+	"data": {
+		"exists": "El archivo de configuración ya existe",
+		"overwrite": "¿Deseas sobreescribir el archivo?"
+	}
+}
