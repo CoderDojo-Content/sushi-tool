@@ -12,6 +12,7 @@
 	},
 	"data": {
 		"exists": "El archivo de configuración ya existe",
-		"overwrite": "¿Deseas sobreescribir el archivo?"
+		"overwrite": "¿Deseas sobreescribir el archivo?",
+		"loadConfiguration": "¿Quieres cargar la configuración desde el archivo _data.json?"
 	}
 }

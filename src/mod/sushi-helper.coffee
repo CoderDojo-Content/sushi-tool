@@ -40,6 +40,25 @@ class SushiSet
       if err
         return console.log(err)
 
+  loadFromMarkdownData: (callback) ->
+    file = path.resolve(global.cwd, "_data.json")
+    configuration = jsonfile.readFileSync(file)
+
+    for key of configuration
+      js_sushicard = configuration[key]
+      @serie_title = js_sushicard.series_title
+      @language = js_sushicard.language
+
+      card = new SushiCard()
+      card.title = js_sushicard.title
+      card.filename = js_sushicard.filename
+      card.card_number = js_sushicard.card_number
+      card.level = js_sushicard.level
+
+      @cards.push card
+
+    callback()
+
   createMarkdownData: ->
     datajson = {}
     for sushi in @cards
@@ -120,7 +139,12 @@ module.exports =
       new SushiSet(jsonfile.readFileSync(path.resolve(global.cwd, "_sushi.json")))
     else
       new SushiSet()
-
+  askToLoadFromDataJson: ->
+    wizard.confirmLoadConfigurationFromDataJson (answer) ->
+      if answer.generate
+        sushiset = new SushiSet()
+        sushiset.loadFromMarkdownData ->
+          sushiset.saveAll()
 
   SushiSet: SushiSet
 

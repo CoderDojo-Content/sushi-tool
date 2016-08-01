@@ -27,11 +27,18 @@ program
     "_sushi.json"
   ]
   checks = []
-  checks[0] = if SushiHelper.mkdConfExists() then "X".green else "-".red
-  checks[1] = if SushiHelper.confExists() then "X".green else "-".red
+  isDataFile = SushiHelper.mkdConfExists()
+  isSushiConf = SushiHelper.confExists()
+
+  checks[0] = if isDataFile then "X".green else "-".red
+  checks[1] = if isSushiConf then "X".green else "-".red
 
   for file, index in check_files
     console.log "[%s] %s", checks[index], file
+
+  if isDataFile && not isSushiConf
+    console.log "There is not configuration, but there is a " + "_data.json".red
+    SushiHelper.askToLoadFromDataJson()
 
 program
 .command "init"
@@ -79,11 +86,6 @@ program
         sushiSet.createMarkdownDataFile()
   else
     sushiSet.createMarkdownDataFile()
-
-program
-.command('*')
-.action (env) ->
-    console.log('deploying "%s"', env)
 
 program
 .parse process.argv

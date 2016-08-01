@@ -12,6 +12,7 @@
 	},
 	"data": {
 		"exists": "The configuration file exists already",
-		"overwrite": "Do you want to overwrite the data file?"
+		"overwrite": "Do you want to overwrite the data file?",
+		"loadConfiguration": "Do you want to load configuration from existing _data.json file?"
 	}
 }

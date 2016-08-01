@@ -48,6 +48,13 @@ module.exports =
       sushiCard.filename = answers.filename ? sushiCard.filename
       callback()
 
+  confirmLoadConfigurationFromDataJson: (callback) ->
+    inquirer.prompt
+      type: 'confirm'
+      name: 'generate'
+      message: __('data.loadConfiguration')
+      default: true
+    .then callback
 
   confirmDataOverwrite: (callback) ->
     inquirer.prompt
