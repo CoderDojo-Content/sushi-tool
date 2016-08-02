@@ -11,13 +11,13 @@ global.cwd = process.cwd()
 
 program
 .version(pjson.version)
-.option "-C, --chdir <path>", "Change the working directory", (directory) ->
+.option "-C, --chdir <path>", __('commands.chdir'), (directory) ->
   global.cwd = path.resolve(directory)
-  console.log "Current working directory is %s", path.resolve(directory)
+  console.log __("messages.current_directory"), path.resolve(directory)
 
 program
 .command "scan"
-.description "Check if there are existing files in the directory"
+.description __('commands.scan')
 .action =>
   console.log "Checking file system"
   check_files = [
@@ -35,19 +35,20 @@ program
     console.log "[%s] %s", checks[index], file
 
   if isDataFile && not isSushiConf
-    console.log "There is not configuration, but there is a " + "_data.json".red
+
+    console.log __("messages.no_config"), "_data.json".red
     SushiHelper.askToLoadFromDataJson()
 
 program
 .command "init"
-.description "Prepare current folder to generate a sushiCard"
+.description __('commands.init')
 .action =>
   sushiSet = SushiHelper.initSushiSetWithWizard()
 
 program
 .command "new"
 .alias "n"
-.description "Add a new Sushi card in this set"
+.description __('commands.new')
 .action =>
   sushiSet = SushiHelper.getSushiSet()
   sushiSet.addNewCardWizard ->
@@ -56,7 +57,7 @@ program
 program
 .command "sync"
 .alias "s"
-.description "Update SushiCard configuration from existing markdown files"
+.description __('commands.sync')
 .action =>
   sushiSet = SushiHelper.getSushiSet()
   SushiWizard.askDataInSushiSet sushiSet, true, ->
@@ -66,7 +67,7 @@ program
 program
 .command "edit"
 .alias "e"
-.description "Edit current sushiSet card"
+.description __('commands.edit')
 .action =>
   sushiSet = SushiHelper.getSushiSet()
   SushiWizard.askDataInSushiSet sushiSet, false, ->

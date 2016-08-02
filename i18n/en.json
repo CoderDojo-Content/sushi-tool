@@ -1,10 +1,24 @@
 {
+	"commands": {
+		"chdir": "Change the working directory",
+		"edit": "Edit current sushiSet card",
+		"init": "Prepare current folder to generate a sushiCard",
+		"new": "Add a new Sushi card in this set",
+		"scan": "Check if there are existing files in the directory",
+		"sync": "Update SushiCard configuration from existing markdown files"
+	},
 	"sushi": {
 		"difficulty": {
 			"beginner": "beginner",
 			"intermediate": "intermediate",
 			"advanced": "advanced"
 		}
+	},
+	"messages": {
+		"conf_updated": "Configuration updated!",
+		"current_directory": "Current working directory is %s",
+		"dont_use_init": "There is already an existing project, please use %s to syncronize your project",
+		"no_config": "There is not configuration, but there is a %s file"
 	},
 	"newSushi": {
 		"series_title": "What is the name of your Sushi serie?",

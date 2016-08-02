@@ -125,7 +125,7 @@ class SushiSet
       , () =>
         @saveSushiJson()
         @createMarkdownDataFile()
-        console.log "Configuration updated!".red
+        console.log __("messages.conf_updated").red
 
 class SushiCard
   TITLE = "title"
@@ -150,7 +150,7 @@ module.exports =
     fs.existsSync(path.resolve(global.cwd, "_data.json"))
   initSushiSetWithWizard: ->
     if @confExists()
-      console.log "There is already an existing project, please use " + "sync".red + " to syncronize your project"
+      console.log __("messages.dont_use_init"), "sync".red
     else
       wizard.newSushi (data) ->
         sushi = new SushiSet()
