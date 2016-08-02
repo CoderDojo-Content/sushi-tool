@@ -1,14 +1,25 @@
 {
+	"sushi": {
+		"difficulty": {
+			"beginner": "beginner",
+			"intermediate": "intermediate",
+			"advanced": "advanced"
+		}
+	},
 	"newSushi": {
 		"series_title": "What is the name of your Sushi serie?",
-		"language": "What programming language/technology is your sushi about?",
+		"subject": "What programming language/technology is your sushi about?",
 		"difficulty": "What level of difficulty does your sushi have?",
-		"number": "How many cards are you going to create?",
 		"cards": {
 			"title_number": "Give the name to your sushi card number %d",
 			"title": "Sushi card title:",
 			"filename": "Filename (without extension .md):"
-		}
+		},
+		"n_cards": "How many cards are you going to include in the set?",
+		"description": "Write a description about your sushi set:",
+		"author": "Author:",
+		"website": "Website:",
+		"twitter": "Twitter:"
 	},
 	"data": {
 		"exists": "The configuration file exists already",

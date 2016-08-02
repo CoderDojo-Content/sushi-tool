@@ -7,18 +7,36 @@ async = require 'async'
 
 class SushiSet
   SET_TITLE = "serie_title"
+  DESCRIPTION = "description"
+  SUBJECT = "subject"
   LANGUAGE = "language"
   DIFFICULTY = "difficulty"
   CARDS = "cards"
+  AUTHOR = "author"
+  WEBSITE = "website"
+  TWITTER = "twitter"
 
   constructor: (json_object) ->
-    @cards = []
     if json_object?.hasOwnProperty(SET_TITLE)
       @serie_title = json_object[SET_TITLE]
+
+    @language = /([a-z]*)/.exec(process.env.LANG)[0]
     if json_object?.hasOwnProperty(LANGUAGE)
       @language = json_object[LANGUAGE]
+    if json_object?.hasOwnProperty(SUBJECT)
+      @subject = json_object[SUBJECT]
+    if json_object?.hasOwnProperty(DESCRIPTION)
+      @description = json_object[DESCRIPTION]
+    if json_object?.hasOwnProperty(AUTHOR)
+      @author = json_object[AUTHOR]
+    if json_object?.hasOwnProperty(WEBSITE)
+      @website = json_object[WEBSITE]
+    if json_object?.hasOwnProperty(TWITTER)
+      @twitter = json_object[TWITTER]
     if json_object?.hasOwnProperty(DIFFICULTY)
       @difficulty = json_object[DIFFICULTY]
+
+    @cards = []
     if json_object?.hasOwnProperty(CARDS)
       @cards = for jsoncard in json_object[CARDS]
         new SushiCard(jsoncard)
@@ -47,13 +65,12 @@ class SushiSet
     for key of configuration
       js_sushicard = configuration[key]
       @serie_title = js_sushicard.series_title
-      @language = js_sushicard.language
+      @subject = js_sushicard.language
 
       card = new SushiCard()
       card.title = js_sushicard.title
       card.filename = js_sushicard.filename
       card.card_number = js_sushicard.card_number
-      card.level = js_sushicard.level
 
       @cards.push card
 
@@ -65,7 +82,8 @@ class SushiSet
       datajson[sushi.filename] =
         title: sushi.title
         filename: sushi.filename
-        language: @language
+        language: @subject
+        subject: @subject
         level: sushi.level
         card_number: sushi.card_number
         series_total_cards: @cards.length
@@ -113,17 +131,13 @@ class SushiCard
   TITLE = "title"
   FILENAME = "filename"
   CARDNUMBER = "card_number"
-  LEVEL = "level"
   constructor: (json_object) ->
-    @level = 1
     if json_object?.hasOwnProperty(TITLE)
       @title = json_object[TITLE]
     if json_object?.hasOwnProperty(FILENAME)
       @filename = json_object[FILENAME]
     if json_object?.hasOwnProperty(CARDNUMBER)
       @card_number = json_object[CARDNUMBER]
-    if json_object?.hasOwnProperty(LEVEL)
-      @level = json_object[LEVEL]
   setTitle: (@title) ->
   getTitle: -> @title
   fillMissingWithWizard: (callback) ->
@@ -134,6 +148,25 @@ module.exports =
     fs.existsSync(path.resolve(global.cwd, "_sushi.json"))
   mkdConfExists: ->
     fs.existsSync(path.resolve(global.cwd, "_data.json"))
+  initSushiSetWithWizard: ->
+    if @confExists()
+      console.log "There is already an existing project, please use " + "sync".red + " to syncronize your project"
+    else
+      wizard.newSushi (data) ->
+        sushi = new SushiSet()
+        sushi.serie_title = data.serie_title
+        sushi.description = data.description
+        sushi.subject = data.subject
+        sushi.difficulty = data.difficulty ? data.difficulty
+        sushi.author = data.author ? data.author
+        sushi.website = data.website ? data.website
+        sushi.twitter = data.twitter ? data.twitter
+
+        n_cards = parseInt(data.n_cards)
+        async.eachSeries [0..n_cards], (item, callback) ->
+          sushi.addNewCardWizard (callback)
+
+
   getSushiSet: ->
     if @confExists()
       new SushiSet(jsonfile.readFileSync(path.resolve(global.cwd, "_sushi.json")))

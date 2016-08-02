@@ -1,30 +1,126 @@
 inquirer = require 'inquirer'
 sprintf = require('sprintf-js').sprintf
 
+
 module.exports =
-  newSushi: (callback) ->
+  askDataInSushiSet: (sushiSet, askOnlyIfMissing, callback) ->
     questions = [
           type: 'input'
-          name: 'moduleName'
+          name: 'serie_title'
           message: __('newSushi.series_title')
-          validate: (value) ->
-            pass = value.match(/^[a-z0-9A-Z]+$/i)
-            if pass
-              return true
-            else
-              return 'Please enter a description'
+          when: -> !askOnlyIfMissing || !sushiSet.serie_title?
+          default: ->
+            sushiSet.serie_title
+        ,
+          type: 'input'
+          name: 'description'
+          message: __('newSushi.description')
+          when: -> !askOnlyIfMissing || !sushiSet.description?
+          default: ->
+            sushiSet.description
+        ,
+          type: 'input'
+          name: 'subject'
+          message: __('newSushi.subject')
+          when: -> !askOnlyIfMissing || !sushiSet.subject?
+          default: ->
+            sushiSet.subject ? 'python'
         ,
           type: 'list'
           name: 'difficulty'
-          message: 'Difficulty of the sushi card'
-          choices: ['beginner', 'intermediate', 'advanced']
+          message: __('newSushi.difficulty')
+          when: -> !askOnlyIfMissing || !sushiSet.difficulty?
+          choices: [
+            {name: __('sushi.difficulty.beginner'), value: 1}
+            {name: __('sushi.difficulty.intermediate'), value: 2}
+            {name: __('sushi.difficulty.advanced'), value: 3}
+          ]
+          default: ->
+            sushiSet.difficulty - 1
         ,
-          type: 'rawlist'
-          name: 'language'
-          message: 'What language are you going teach?'
-          choices: ['php', 'nodejs', 'dd']
-
+          type: 'input'
+          name: 'author'
+          when: -> !askOnlyIfMissing || !sushiSet.author?
+          message: __('newSushi.author')
+          default: ->
+            sushiSet.author
+        ,
+          type: 'input'
+          name: 'website'
+          when: -> !askOnlyIfMissing || !sushiSet.website?
+          message: __('newSushi.website')
+          default: ->
+            sushiSet.website
+        ,
+          type: 'input'
+          name: 'twitter'
+          when: -> !askOnlyIfMissing || !sushiSet.twitter?
+          message: __('newSushi.twitter')
+          default: ->
+            sushiSet.twitter
       ]
+
+    inquirer.prompt questions
+    .then (answers)->
+      sushiSet.serie_title = answers.serie_title ? sushiSet.serie_title
+      sushiSet.description = answers.description ? sushiSet.description
+      sushiSet.subject = answers.subject ? sushiSet.subject
+      sushiSet.difficulty = answers.difficulty ? sushiSet.difficulty
+      sushiSet.author = answers.author ? sushiSet.author
+      sushiSet.website = answers.website ? sushiSet.website
+      sushiSet.twitter = answers.twitter ? sushiSet.twitter
+
+      callback()
+
+
+  newSushi: (callback) ->
+    questions = [
+          type: 'input'
+          name: 'serie_title'
+          message: __('newSushi.series_title')
+        ,
+          type: 'input'
+          name: 'description'
+          message: __('newSushi.description')
+        ,
+          type: 'input'
+          name: 'subject'
+          message: __('newSushi.subject')
+          default: ->
+            'python'
+        ,
+          type: 'list'
+          name: 'difficulty'
+          message: __('newSushi.difficulty')
+          choices: [
+            {name: __('sushi.difficulty.beginner'), value: 1}
+            {name: __('sushi.difficulty.intermediate'), value: 2}
+            {name: __('sushi.difficulty.advanced'), value: 3}
+          ]
+        ,
+          type: 'input'
+          name: 'author'
+          message: __('newSushi.author')
+        ,
+          type: 'input'
+          name: 'website'
+          message: __('newSushi.website')
+        ,
+          type: 'input'
+          name: 'twitter'
+          message: __('newSushi.twitter')
+        ,
+          type: 'input'
+          name: 'n_cards'
+          message: __('newSushi.n_cards')
+          validate: (value) ->
+            pass = value.match(/^\d+$/i)
+            if pass
+              return true
+            else
+              return 'Please enter a valid number'
+      ]
+
     inquirer.prompt questions
     .then callback
 

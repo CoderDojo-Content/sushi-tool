@@ -9,8 +9,6 @@ color = require('colors')
 pjson = require(__dirname + '/../../package.json');
 global.cwd = process.cwd()
 
-
-
 program
 .version(pjson.version)
 .option "-C, --chdir <path>", "Change the working directory", (directory) ->
@@ -44,9 +42,7 @@ program
 .command "init"
 .description "Prepare current folder to generate a sushiCard"
 .action =>
-  sushiSet = SushiHelper.getSushiSet()
-  sushiSet.addNewCardWizard ->
-    console.log "Sushi card added"
+  sushiSet = SushiHelper.initSushiSetWithWizard()
 
 program
 .command "new"
@@ -58,34 +54,25 @@ program
     console.log "Sushi card added"
 
 program
-.command "info"
-.alias "i"
-.description "Display available information of the SushiCard set"
-.action =>
-  sushiSet = SushiHelper.getSushiSet()
-  console.log "Sushi : %j", sushiSet
-
-program
 .command "sync"
 .alias "s"
 .description "Update SushiCard configuration from existing markdown files"
 .action =>
   sushiSet = SushiHelper.getSushiSet()
-  sushiSet.updateFromLocalFiles()
+  SushiWizard.askDataInSushiSet sushiSet, true, ->
+    sushiSet.saveAll()
+    sushiSet.updateFromLocalFiles()
 
 program
-.command "datajson"
-.description "Create or regenerate _data.json file from _sushi.json"
-.action (dir) =>
+.command "edit"
+.alias "e"
+.description "Edit current sushiSet card"
+.action =>
   sushiSet = SushiHelper.getSushiSet()
+  SushiWizard.askDataInSushiSet sushiSet, false, ->
+    sushiSet.saveAll()
+    sushiSet.updateFromLocalFiles()
 
-  if SushiHelper.mkdConfExists()
-    console.log __('data.exists').green
-    SushiWizard.confirmDataOverwrite (response) ->
-      if (response.overwrite)
-        sushiSet.createMarkdownDataFile()
-  else
-    sushiSet.createMarkdownDataFile()
 
 program
 .parse process.argv
