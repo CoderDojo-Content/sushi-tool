@@ -4,17 +4,17 @@ NodePDF       = require "nodepdf"
 Multispinner  = require "multispinner"
 async = require "async"
 open  = require "open"
-Git   = require "nodegit"
 glob  = require "glob"
 os    = require "os"
 livereload    = require('livereload');
 port  = 9080
 webPrefix     = "http://localhost:#{port}/"
-outputFolder  = "output-sushi/"
+
 factor    = 0.33
 pWidth    = 2480 * factor
 pHeight   = 3508 * factor
 webpages  = []
+SushiTemplateLoader = require "./sushi-template-loader.js"
 
 nodePDFproperties =
   viewportSize:
@@ -32,10 +32,6 @@ nodePDFproperties =
         bottom: '0px'
   zoomFactor: 1
 
-home = process.env.HOME || process.env.USERPROFILE
-template_dir = ".sushi-tool/template"
-template_pwd = path.resolve(path.join(home, template_dir))
-
 module.exports =
   merge: false
   live: (sushiSet, openBrowser, liveCallback) ->
@@ -46,19 +42,12 @@ module.exports =
 
     async.series [
       (callback) ->
-        if (!fs.existsSync(template_pwd))
-          console.log "Template folder does not exist %s", template_pwd
-          spinner = new Multispinner
-            'git_download': __("pdf.download_template")
-
-          Git.Clone "https://github.com/diegogd/sushi-gen-template", template_pwd
-          .then (repository) ->
-            spinner.success('git_download')
-            callback()
-        else
+        SushiTemplateLoader.prepareTemplateFolder ->
+          console.log "Going out"
           callback()
       ,
       (callback) ->
+        template_pwd = SushiTemplateLoader.template_pwd
         target_file = path.join template_pwd, "sushi"
         if (fs.existsSync(target_file))
           fs.unlinkSync(target_file)
@@ -80,6 +69,7 @@ module.exports =
         liveCallback()
         callback()
     ]
+
 
   renderPdf: (sushiSet, output) ->
     @live sushiSet, false, =>

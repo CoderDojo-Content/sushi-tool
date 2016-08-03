@@ -44,6 +44,7 @@
 		"loadConfiguration": "¿Quieres cargar la configuración desde el archivo _data.json?"
 	},
 	"pdf": {
+		"bower_dependencies": "Downloading dependencies of template",
 		"download_template": "Downloading template from git repository",
 		"merge_tool": "To use %s option you need to have installed %s (poppler)"
 	}
