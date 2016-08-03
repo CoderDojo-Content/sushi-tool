@@ -1,12 +1,15 @@
-program = require "commander"
-SushiHelper = require __dirname + '/../mod/sushi-helper.js'
-SushiWizard = require __dirname + '/../mod/sushi-wizards.js'
+program       = require "commander"
+commandExists = require "command-exists"
+async         = require "async"
+SushiHelper   = require __dirname + '/../mod/sushi-helper.js'
+SushiWizard   = require __dirname + '/../mod/sushi-wizards.js'
+SushiCompiler = require __dirname + '/../mod/sushi-compiler.js'
 
-fs = require('fs')
-path = require('path')
+fs    = require('fs')
+path  = require('path')
 color = require('colors')
-
 pjson = require(__dirname + '/../../package.json');
+
 global.cwd = process.cwd()
 
 program
@@ -74,6 +77,38 @@ program
     sushiSet.saveAll()
     sushiSet.updateFromLocalFiles()
 
+program
+.command "live"
+.alias "l"
+.description __('commands.live')
+.action =>
+  sushiSet = SushiHelper.getSushiSet()
+  SushiCompiler.live sushiSet, true, ->
+    console.log "Running"
+
+program
+.command "pdf <output>"
+.alias "p"
+.description __('commands.pdf')
+.option "-m", __('commands.merge'), (directory) ->
+  SushiCompiler.merge = true
+.action (outputFolder) =>
+  sushiSet = SushiHelper.getSushiSet()
+
+  #output = path.resolve(output)
+
+  async.series [
+    (callback) ->
+      if SushiCompiler.merge
+        commandExists 'pdfunite', (err, commandExists) ->
+          if !commandExists
+            console.log __('pdf.merge_tool'), "merge (-m)".bold, "pdfunite".red
+            process.exit -1
+          else
+            callback()
+    , (callback) ->
+      SushiCompiler.renderPdf(sushiSet,outputFolder)
+  ]
 
 program
 .parse process.argv

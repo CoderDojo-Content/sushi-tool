@@ -38,8 +38,14 @@ class SushiSet
 
     @cards = []
     if json_object?.hasOwnProperty(CARDS)
-      @cards = for jsoncard in json_object[CARDS]
+      loadingCards = for jsoncard in json_object[CARDS]
         new SushiCard(jsoncard)
+      async.each loadingCards, (card, callback) =>
+        if fs.existsSync(path.resolve(global.cwd, card.filename + ".md"))
+          @cards.push (card)
+
+    @cards = @cards.sort (a, b) ->
+      a.card_number - b.card_number
 
   saveAll: ->
     @saveSushiJson()

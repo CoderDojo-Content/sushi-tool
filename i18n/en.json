@@ -3,7 +3,10 @@
 		"chdir": "Change the working directory",
 		"edit": "Edit current sushiSet card",
 		"init": "Prepare current folder to generate a sushiCard",
+		"live": "Start the live mode: edit and see with livereload your markdown",
 		"new": "Add a new Sushi card in this set",
+		"merge": "Merge generated pdfs into a single one (requieres PDFtk tool)",
+		"pdf": "Generate the sushi cards in the specified output folder",
 		"scan": "Check if there are existing files in the directory",
 		"sync": "Update SushiCard configuration from existing markdown files"
 	},
@@ -39,5 +42,9 @@
 		"exists": "The configuration file exists already",
 		"overwrite": "Do you want to overwrite the data file?",
 		"loadConfiguration": "Do you want to load configuration from existing _data.json file?"
+	},
+	"pdf": {
+		"download_template": "Downloading template from git repository",
+		"merge_tool": "To use %s option you need to have installed %s (poppler)"
 	}
 }
