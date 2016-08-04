@@ -44,3 +44,29 @@ $ chopsticks live
 ```
 
 ![Live command demo](assets/live-command.gif)
+
+### PDF command
+
+This command allow you to render your sushi cards in a set of pdfs or a single one.
+
+To generate a **set of pdfs** execute the following command in your project folder:
+
+```bash
+$ chopsticks pdf output_folder
+```
+
+To generate a **single pdf** add the merge (-m) option.
+
+```bash
+$ chopsticks pdf -m output.pdf
+```
+
+![Live command demo](assets/pdf-merge-command.gif)
+
+### Sync command
+
+If you create new markdown files, you can update your configuration file using the following command.
+
+```bash
+$ chopsticks sync
+```
