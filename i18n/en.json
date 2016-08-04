@@ -1,51 +1,51 @@
 {
 	"commands": {
 		"chdir": "Change the working directory",
-		"edit": "Edit current sushiSet card",
-		"init": "Prepare current folder to generate a sushiCard",
-		"live": "Start the live mode: edit and see with livereload your markdown",
-		"new": "Add a new Sushi card in this set",
-		"merge": "Merge generated pdfs into a single one (requieres PDFtk tool)",
-		"pdf": "Generate the sushi cards in the specified output folder",
+		"edit": "Edit current Sushi series' configuration",
+		"init": "Prepare current folder to generate a Sushi series",
+		"live": "Start the live mode: view changes to your Markdown live in your browser",
+		"new": "Add a new Sushi card to this series",
+		"merge": "Merge generated pdfs into a single one (requieres PDFunite tool)",
+		"pdf": "Generate the Sushi Cards in the specified output folder",
 		"scan": "Check if there are existing files in the directory",
-		"sync": "Update SushiCard configuration from existing markdown files"
+		"sync": "Update Sushi series details from existing Markdown files"
 	},
 	"sushi": {
 		"difficulty": {
-			"beginner": "beginner",
-			"intermediate": "intermediate",
-			"advanced": "advanced"
+			"beginner": "Beginner",
+			"intermediate": "Intermediate",
+			"advanced": "Advanced"
 		}
 	},
 	"messages": {
-		"conf_updated": "Configuration updated!",
+		"conf_updated": "Details updated!",
 		"current_directory": "Current working directory is %s",
 		"dont_use_init": "There is already an existing project, please use %s to syncronize your project",
-		"no_config": "There is not configuration, but there is a %s file"
+		"no_config": "There is no series configuration in this folder, but there is a %s file"
 	},
 	"newSushi": {
-		"series_title": "What is the name of your Sushi serie?",
-		"subject": "What programming language/technology is your sushi about?",
-		"difficulty": "What level of difficulty does your sushi have?",
+		"series_title": "What is the name of your Sushi series?",
+		"subject": "What subject is your Sushi about? (e.g. HTML, Game Design)",
+		"difficulty": "Please rate the difficulty of your Sushi series:",
 		"cards": {
 			"title_number": "Give the name to your sushi card number %d",
-			"title": "Sushi card title:",
+			"title": "Sushi Card title:",
 			"filename": "Filename (without extension .md):"
 		},
 		"n_cards": "How many cards are you going to include in the set?",
-		"description": "Write a description about your sushi set:",
-		"author": "Author:",
-		"website": "Website:",
-		"twitter": "Twitter:"
+		"description": "Please write a short description of your Sushi series:",
+		"author": "Who should be listed as the author of this series (e.g. CoderDojo Foundation or Diego):",
+		"website": "Author's website:",
+		"twitter": "Author's twitter:"
 	},
 	"data": {
-		"exists": "The configuration file exists already",
-		"overwrite": "Do you want to overwrite the data file?",
-		"loadConfiguration": "Do you want to load configuration from existing _data.json file?"
+		"exists": "The series configuration file exists already",
+		"overwrite": "Do you want to overwrite the series configuration file?",
+		"loadConfiguration": "Do you want to load series configuration from the existing _data.json file?"
 	},
 	"pdf": {
-		"bower_dependencies": "Downloading dependencies of template",
-		"download_template": "Downloading template from git repository",
-		"merge_tool": "To use %s option you need to have installed %s (poppler)"
+		"bower_dependencies": "Downloading dependencies of Sushi Card generator",
+		"download_template": "Downloading Sushi Card generator from GitHub repository",
+		"merge_tool": "To use %s option you need to have installed %s (poppler — https://poppler.freedesktop.org/)"
 	}
 }
