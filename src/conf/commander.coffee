@@ -95,20 +95,25 @@ program
 .action (outputFolder) =>
   sushiSet = SushiHelper.getSushiSet()
 
-  #output = path.resolve(output)
-
-  async.series [
-    (callback) ->
-      if SushiCompiler.merge
-        commandExists 'pdfunite', (err, commandExists) ->
-          if !commandExists
-            console.log __('pdf.merge_tool'), "merge (-m)".bold, "pdfunite".red
-            process.exit -1
+  commandExists 'phantomjs', (err, exists) =>
+    if !exists
+      console.log __('pdf.render_tool'), "phantomjs".red
+    else
+      async.series [
+        (callback) ->
+          if SushiCompiler.merge
+            commandExists 'pdfunite', (err, exists) ->
+              if !exists
+                console.log __('pdf.merge_tool'), "merge (-m)".bold, "pdfunite".red
+                process.exit -1
+              else
+                callback()
           else
             callback()
-    , (callback) ->
-      SushiCompiler.renderPdf(sushiSet,outputFolder)
-  ]
+
+        , (callback) ->
+          SushiCompiler.renderPdf(sushiSet,outputFolder)
+      ]
 
 program
 .parse process.argv

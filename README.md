@@ -70,3 +70,21 @@ If you create new markdown files, you can update your configuration file using t
 ```bash
 $ chopsticks sync
 ```
+
+## Dependencies
+
+To use the pdf generation you need to have installed ```phantomjs```, install it using ```npm```:
+
+```bash
+$ sudo npm install -g phantomjs
+```
+
+To merge your pdf filesthe ```pdfunite``` command line tool, which uses the `poppler` library.
+
+### Linux
+
+Install the `poppler-utils` package using your package manager.
+
+### OS X
+
+Install `poppler` using Homebrew.

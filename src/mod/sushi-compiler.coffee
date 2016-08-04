@@ -43,7 +43,6 @@ module.exports =
     async.series [
       (callback) ->
         SushiTemplateLoader.prepareTemplateFolder ->
-          console.log "Going out"
           callback()
       ,
       (callback) ->
@@ -73,10 +72,8 @@ module.exports =
 
   renderPdf: (sushiSet, output) ->
     @live sushiSet, false, =>
-      console.log "Rendering files..."
 
       if @merge
-        console.log os.tmpdir()
         outputFolder = path.join os.tmpdir(), "sushi-render"
       else
         outputFolder = output
@@ -96,12 +93,10 @@ module.exports =
         async.series [
           (callback) =>
             if @merge
-              console.log "Merging files"
               pdfconcat = require 'pdfconcat'
               pdfconcat outputpdffiles, output, (error) ->
                 if error
                   console.log "%s".red, error
-                console.log "Files merged"
                 callback()
             else
               callback()
@@ -111,8 +106,9 @@ module.exports =
                 fs.unlink file, deletecallback
               , (err) =>
                 callback()
+            else
+              callback()
           , (callback) =>
-            console.log "Closing web server..."
             process.exit()
           ]
 

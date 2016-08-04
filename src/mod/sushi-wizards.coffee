@@ -1,7 +1,6 @@
 inquirer = require 'inquirer'
 sprintf = require('sprintf-js').sprintf
 
-
 module.exports =
   askDataInSushiSet: (sushiSet, askOnlyIfMissing, callback) ->
     questions = [

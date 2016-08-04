@@ -5,38 +5,37 @@
 		"init": "Prepara el directorio para generar Sushi Cards",
 		"live": "Inicia el modo \"live\": edita y ve tu markdown con livereload",
 		"new": "Añade una nueva tarjeta al conjunto al SushiSet",
-		"merge": "Combina los pdfs en uno solo (requiere herramienta PDFtk)",
+		"merge": "Combina los pdfs en uno solo (requiere herramienta PDFUnite)",
 		"pdf": "Exporta tus tarjetas a pdf en el directorio indicado",
 		"scan": "Comprueba si hay archivos de configuración en el directorio actual",
 		"sync": "Actualiza la configuración a partird de las tarjetas existentes"
 	},
 	"sushi": {
 		"difficulty": {
-			"beginner": "básico",
-			"intermediate": "intermedio",
-			"advanced": "avanzado"
+			"beginner": "Básico",
+			"intermediate": "Intermedio",
+			"advanced": "Avanzado"
 		}
 	},
 	"messages": {
 		"conf_updated": "¡Configuración actualizada!",
 		"current_directory": "El directorio de trabajo actual es %s",
 		"dont_use_init": "Ya hay un projecto existente, usa el comando %s para sincronizar los datos",
-		"no_config": "No hay configuración pero existe un archivo %s"
+		"no_config": "No hay configuración en la carpeta, pero existe un archivo %s"
 	},
 	"newSushi": {
 		"series_title": "¿Cuál es el nombre de la serie de Sushi Cards?",
-		"subject": "¿Qué lenguaje/tecnología vas a enseñar en las tarjetas?",
+		"subject": "¿Qué tema vas a enseñar en las tarjetas? (p.e. HTML, Diseño de videojuegos)",
 		"difficulty": "¿Qué grado de dificultad tienen las tarjetas?",
 		"cards": {
-			"title_number": "Give the name to your sushi card number %d",
 			"title": "Título de la tarjeta:",
 			"filename": "Nombre del archivo (sin .md):"
 		},
-		"n_cards": "¿Cuántas cartas vas a incluir en el set?",
-		"description": "Escribe una descripción sobre tu módulo:",
-		"author": "Autor:",
-		"website": "Página web:",
-		"twitter": "Twitter:"
+		"n_cards": "¿Cuántas tarjetas vas a incluir en la serie?",
+		"description": "Escribe una descripción sobre tu serie de Sushi Cards:",
+		"author": "Quién figurará como autor (p.e. CoderDojo Foundation o Diego):",
+		"website": "Página web del autor:",
+		"twitter": "Twitter del autor:"
 	},
 	"data": {
 		"exists": "El archivo de configuración ya existe",
@@ -44,8 +43,9 @@
 		"loadConfiguration": "¿Quieres cargar la configuración desde el archivo _data.json?"
 	},
 	"pdf": {
-		"bower_dependencies": "Downloading dependencies of template",
-		"download_template": "Downloading template from git repository",
-		"merge_tool": "To use %s option you need to have installed %s (poppler)"
+		"bower_dependencies": "Descargando dependencias del generador de Sushi Card",
+		"download_template": "Descargando generador de Sushi Cards desde el repositorio de GitHub",
+		"merge_tool": "Para usar la opción %s debes tener instalado %s (poppler — https://poppler.freedesktop.org/)",
+		"render_tool": "Para generar los pdfs debes tener instalado %s (http://phantomjs.org/)"
 	}
 }

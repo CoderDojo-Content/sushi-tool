@@ -28,7 +28,6 @@
 		"subject": "What subject is your Sushi about? (e.g. HTML, Game Design)",
 		"difficulty": "Please rate the difficulty of your Sushi series:",
 		"cards": {
-			"title_number": "Give the name to your sushi card number %d",
 			"title": "Sushi Card title:",
 			"filename": "Filename (without extension .md):"
 		},
@@ -46,6 +45,7 @@
 	"pdf": {
 		"bower_dependencies": "Downloading dependencies of Sushi Card generator",
 		"download_template": "Downloading Sushi Card generator from GitHub repository",
-		"merge_tool": "To use %s option you need to have installed %s (poppler — https://poppler.freedesktop.org/)"
+		"merge_tool": "To use %s option you need to have installed %s (poppler — https://poppler.freedesktop.org/)",
+		"render_tool": "To generate pdfs you need to have installed %s (http://phantomjs.org/)"
 	}
 }

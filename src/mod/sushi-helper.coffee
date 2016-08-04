@@ -55,14 +55,14 @@ class SushiSet
     file = path.resolve(global.cwd, "_sushi.json")
     jsonfile.writeFile file, @, {spaces: 2}, (err) ->
       if err
-        return console.log(err)
+        console.log(err)
 
   createMarkdownDataFile: ->
     data = @createMarkdownData()
     file = path.resolve(global.cwd, "_data.json")
     jsonfile.writeFile file, data, {spaces: 2}, (err) ->
       if err
-        return console.log(err)
+        console.log(err)
 
   loadFromMarkdownData: (callback) ->
     file = path.resolve(global.cwd, "_data.json")
