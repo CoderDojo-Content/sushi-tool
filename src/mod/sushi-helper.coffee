@@ -169,9 +169,8 @@ module.exports =
         sushi.twitter = data.twitter ? data.twitter
 
         n_cards = parseInt(data.n_cards)
-        async.eachSeries [0..n_cards], (item, callback) ->
+        async.eachSeries [1..n_cards], (item, callback) ->
           sushi.addNewCardWizard (callback)
-
 
   getSushiSet: ->
     if @confExists()
