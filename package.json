@@ -13,7 +13,10 @@
     "chopsticks": "./lib/sushi-tool.js"
   },
   "devDependencies": {
-    "grunt-banner": "^0.6.0"
+    "grunt": "^1.0.1",
+    "grunt-banner": "^0.6.0",
+    "grunt-contrib-coffee": "^1.0.0",
+    "grunt-contrib-watch": "^1.0.0"
   },
   "dependencies": {
     "async": "^2.0.1",
