@@ -29,4 +29,18 @@ $ chopsticks init
 
 Initialize a folder to star creating a sushi card
 
+```bash
+$ chopsticks init
+```
+
 ![Init command demo](assets/init-command.gif)
+
+### Live command
+
+This mode allow you to edit your sushi cards and see the result in your every time you save your file without the need of refreshing it.
+
+```bash
+$ chopsticks live
+```
+
+![Live command demo](assets/live-command.gif)
