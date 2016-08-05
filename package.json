@@ -1,13 +1,22 @@
 {
   "name": "sushi-tool",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Tool to generate CoderDojo sushi templates",
   "main": "lib/sushi-tool.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "keywords": ["chopsticks", "sushi cards", "coderdojo"],
+  "author": "CoderDojo Foundation",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/CoderDojo/sushi-tool.git"
+  },
+  "bugs": {
+    "url": "https://github.com/CoderDojo/sushi-tool/issues"
+  },
+  "homepage": "https://github.com/CoderDojo/sushi-tool",
   "bin": {
     "sushi-tool": "./lib/sushi-tool.js",
     "chopsticks": "./lib/sushi-tool.js"
