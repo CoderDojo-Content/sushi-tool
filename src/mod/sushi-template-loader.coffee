@@ -12,7 +12,7 @@ template_dir = ".sushi-tool/template"
 template_pwd = path.resolve(path.join(home, template_dir))
 prettyjson = require 'prettyjson'
 
-gitRepository = "https://github.com/PhilipHarney/sushi-gen"
+gitRepository = "https://github.com/CoderDojo/sushi-gen"
 
 downloadDependencies = (callback) ->
   # Execute bower
