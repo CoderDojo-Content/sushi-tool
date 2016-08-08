@@ -177,12 +177,14 @@ module.exports =
       new SushiSet(jsonfile.readFileSync(path.resolve(global.cwd, "_sushi.json")))
     else
       new SushiSet()
-  askToLoadFromDataJson: ->
+  askToLoadFromDataJson: (callback) ->
     wizard.confirmLoadConfigurationFromDataJson (answer) ->
       if answer.generate
         sushiset = new SushiSet()
         sushiset.loadFromMarkdownData ->
           sushiset.saveAll()
+      else
+        callback()
 
   SushiSet: SushiSet
 

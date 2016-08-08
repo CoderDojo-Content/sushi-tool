@@ -30,16 +30,28 @@ module.exports =
   updateTemplate: (callback) ->
     spinner = new Multispinner
       'bower_dependencies': __("pdf.bower_dependencies")
-    downloadDependencies ->
-      if !fs.existsSync template_pwd
-        fs.symlinkSync path.join(template_git_pwd, "public"), template_pwd
-      if !fs.existsSync path.join(template_pwd, "_harp.json")
-        fs.symlinkSync path.join(template_git_pwd, "harp.json"), path.join(template_pwd, "_harp.json")
-      spinner.success('bower_dependencies')
 
+    async.series [
+      (internalCallback) ->
+        Git.Repository.open (template_git_pwd)
+        .then (repository) ->
+          repository.fetchAll()
+          .then ->
+            repository.mergeBranches("master", "origin/master")
+            .then (oid) ->
+              internalCallback()
+      , (internalCallback) ->
+        downloadDependencies ->
+          if !fs.existsSync template_pwd
+            fs.symlinkSync path.join(template_git_pwd, "public"), template_pwd
+          if !fs.existsSync path.join(template_pwd, "_harp.json")
+            fs.symlinkSync path.join(template_git_pwd, "harp.json"), path.join(template_pwd, "_harp.json")
+          spinner.success('bower_dependencies')
 
-    spinner.on 'done', =>
-      callback()
+        spinner.on 'done', =>
+          callback()
+          internalCallback()
+    ]
 
   downloadTemplate: (callback) ->
     Git.Clone gitRepository, template_git_pwd, { checkoutBranch: "master" }

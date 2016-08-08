@@ -21,7 +21,9 @@
 		"conf_updated": "¡Configuración actualizada!",
 		"current_directory": "El directorio de trabajo actual es %s",
 		"dont_use_init": "Ya hay un projecto existente, usa el comando %s para sincronizar los datos",
-		"no_config": "No hay configuración en la carpeta, pero existe un archivo %s"
+		"no_config": "No hay configuración en la carpeta, pero existe un archivo %s",
+		"no_config_exec_init": "No hay configuración en la carpeta, ejecute primero el comando init",
+		"no_config_data_exec_scan": "No hay configuración en la carpeta, pero existe un archivo _data.json, ejecuta el comando scan"
 	},
 	"newSushi": {
 		"series_title": "¿Cuál es el nombre de la serie de Sushi Cards?",

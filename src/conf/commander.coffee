@@ -12,6 +12,15 @@ pjson = require(__dirname + '/../../package.json');
 
 global.cwd = process.cwd()
 
+checkRequiredFilesToExecute = ->
+  if !SushiHelper.confExists()
+    if SushiHelper.mkdConfExists()
+      console.log __("messages.no_config_data_exec_scan")
+    else
+      console.log __("messages.no_config_exec_init")
+
+    process.exit(-1)
+
 program
 .version(pjson.version)
 .option "-C, --chdir <path>", __('commands.chdir'), (directory) ->
@@ -38,9 +47,10 @@ program
     console.log "[%s] %s", checks[index], file
 
   if isDataFile && not isSushiConf
-
     console.log __("messages.no_config"), "_data.json".red
-    SushiHelper.askToLoadFromDataJson()
+    SushiHelper.askToLoadFromDataJson ->
+      # Execute if no loading _data.json
+      process.exit(-1)
 
 program
 .command "init"
@@ -72,6 +82,7 @@ program
 .alias "e"
 .description __('commands.edit')
 .action =>
+  checkRequiredFilesToExecute()
   sushiSet = SushiHelper.getSushiSet()
   SushiWizard.askDataInSushiSet sushiSet, false, ->
     sushiSet.saveAll()
@@ -82,6 +93,7 @@ program
 .alias "l"
 .description __('commands.live')
 .action =>
+  checkRequiredFilesToExecute()
   sushiSet = SushiHelper.getSushiSet()
   SushiCompiler.live sushiSet, true, ->
     console.log "Running"
@@ -93,6 +105,8 @@ program
 .option "-m", __('commands.merge'), (directory) ->
   SushiCompiler.merge = true
 .action (outputFolder) =>
+  checkRequiredFilesToExecute()
+
   sushiSet = SushiHelper.getSushiSet()
 
   commandExists 'phantomjs', (err, exists) =>

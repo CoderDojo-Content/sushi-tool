@@ -21,7 +21,9 @@
 		"conf_updated": "Details updated!",
 		"current_directory": "Current working directory is %s",
 		"dont_use_init": "There is already an existing project, please use %s to syncronize your project",
-		"no_config": "There is no series configuration in this folder, but there is a %s file"
+		"no_config": "There is no series configuration in this folder, but there is a %s file",
+		"no_config_exec_init": "There is no series configuration, please execute first the init command",
+		"no_config_data_exec_scan": "There is no series configuration, but there is a _data.json file, please execute scan command"
 	},
 	"newSushi": {
 		"series_title": "What is the name of your Sushi series?",
