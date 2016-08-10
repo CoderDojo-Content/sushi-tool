@@ -88,14 +88,24 @@ program
     sushiSet.saveAll()
     sushiSet.updateFromLocalFiles()
 
+livereload = true
+openbroser = true
+loadToolbar = true
+
 program
 .command "live"
 .alias "l"
 .description __('commands.live')
+.option "--nolivereload", __('commands.liveoption.nolivereload'), ->
+  livereload = false
+.option "--noopenbrowser", __('commands.liveoption.nobrowser'), ->
+  openbroser = false
+.option "--notoolbar", __('commands.liveoption.notoolbar'), ->
+  loadToolbar = false
 .action =>
   checkRequiredFilesToExecute()
   sushiSet = SushiHelper.getSushiSet()
-  SushiCompiler.live sushiSet, true, ->
+  SushiCompiler.live sushiSet, loadToolbar, openbroser, livereload, ->
     console.log "Running"
 
 program

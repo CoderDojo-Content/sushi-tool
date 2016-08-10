@@ -8,7 +8,12 @@
 		"merge": "Merge generated pdfs into a single one (requieres PDFunite tool)",
 		"pdf": "Generate the Sushi Cards in the specified output folder",
 		"scan": "Check if there are existing files in the directory",
-		"sync": "Update Sushi series details from existing Markdown files"
+		"sync": "Update Sushi series details from existing Markdown files",
+		"liveoption": {
+			"nolivereload": "The mode 'livereload' is not actived",
+			"nobrowser": "Avoid launching the browser with the first page",
+			"notoolbar": "The toolbar of chopsticks is not initialized"
+		}
 	},
 	"sushi": {
 		"difficulty": {

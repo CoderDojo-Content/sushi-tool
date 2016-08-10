@@ -34,11 +34,12 @@ nodePDFproperties =
 
 module.exports =
   merge: false
-  live: (sushiSet, openBrowser, liveCallback) ->
+  live: (sushiSet, loadToolbar, openBrowser, loadLiveReload, liveCallback) ->
     express = require("express")
     harp = require("harp")
     app = express()
     working_dir = global.cwd
+    webtool_dir = path.join(__dirname, "../../webtool/")
 
     async.series [
       (callback) ->
@@ -48,20 +49,46 @@ module.exports =
       (callback) ->
         template_pwd = SushiTemplateLoader.template_pwd
         target_file = path.join template_pwd, "sushi"
+
         if (fs.existsSync(target_file))
           fs.unlinkSync(target_file)
-
         fs.symlinkSync(working_dir, target_file)
+
         app.use(express.static(template_pwd))
+
+        if loadToolbar
+          # Polymer toolbar
+          app.use("/webtool/", express.static(webtool_dir))
+          app.use("/sushi-services/", require("./sushi-webtool-service.js")(sushiSet))
+          app.use(require('connect-inject')
+            runAll: true
+            rules: [
+                match: /<\/head>/ig
+                snippet: """
+                <script src="/webtool/bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+                <link rel="import" href="/webtool/chopsticks-toolbar.html">
+                """
+                fn: (w, s) -> s + w
+              ,
+                match: /<body>/ig
+                snippet: [
+                  '<chopsticks-toolbar></chopsticks-toolbar>'
+                ]
+                fn: (w, s) -> w + s
+            ]
+          )
+
         app.use(harp.mount("/",template_pwd))
 
         app.listen port, ->
-          if openBrowser
+          if loadLiveReload
             server = livereload.createServer({exts: ['md']})
             server.watch(working_dir)
 
+          if openBrowser
             firstCard = sushiSet.cards[0]
             open(webPrefix + "sushi/" + firstCard.filename )
+
           callback()
       ,
       (callback) ->
@@ -69,9 +96,11 @@ module.exports =
         callback()
     ]
 
-
   renderPdf: (sushiSet, output) ->
-    @live sushiSet, false, =>
+    loadToolbar = false
+    openBrowser = false
+    loadLiveReload = false
+    @live sushiSet, loadToolbar, openBrowser, loadLiveReload, =>
 
       if @merge
         outputFolder = path.join os.tmpdir(), "sushi-render"

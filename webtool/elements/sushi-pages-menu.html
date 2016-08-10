@@ -1,0 +1,38 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/paper-menu-button/paper-menu-button.html">
+<link rel="import" href="../bower_components/paper-menu/paper-menu.html">
+<link rel="import" href="../bower_components/paper-item/paper-item.html">
+
+<dom-module id="sushi-pages-menu">
+  <template>
+    <style>
+      paper-item {
+        font-size: 0.7em;
+        --paper-item-min-height: 20px;
+      }
+      paper-menu {
+        --paper-menu-background-color: rgba(0, 0, 0, 0.5);
+        --paper-menu-color: rgba(255, 255, 255, 0.9);
+      }
+      paper-icon-button {
+        margin-right: 0px !important;
+      }
+      a {
+        color: rgba(255,255,255, 0.9);
+      }
+    </style>
+    <paper-menu-button dynamic-align="true" vertical-offset="35" no-animations>
+      <paper-icon-button icon="menu" class="dropdown-trigger"></paper-icon-button>
+      <paper-menu class="dropdown-content" selected="{{selected.card_number}}" attr-for-selected="number">
+        <template is="dom-repeat" items={{cards}}>
+          <paper-item number="{{item.card_number}}"><a href="./{{item.filename}}">{{item.card_number}} - {{item.title}}</a></paper-item>
+        </template>
+      </paper-menu>
+    </paper-menu-button>
+  </template>
+  <script>
+    Polymer({
+      is: 'sushi-pages-menu'
+    });
+  </script>
+</dom-module>

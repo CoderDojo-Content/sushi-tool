@@ -1,0 +1,52 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+
+<dom-module id="sushi-pages-browser">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+      a {
+        color: rgba(255,255,255, 0.9);
+      }
+    </style>
+
+    <paper-icon-button id="prevButton" on-tap="openLink" link="./{{prevCard.filename}}" icon="chevron-left"></paper-icon-button>
+    <paper-icon-button id="nextButton" on-tap="openLink" link="./{{postCard.filename}}" icon="chevron-right"></paper-icon-button>
+  </template>
+  <script>
+    Polymer({
+      is: 'sushi-pages-browser',
+      properties: {
+        cards: {
+          type: Array,
+          notify: true
+        },
+        selected: {
+          type: Object
+        }
+      },
+      observers: [
+        'updateLinks(cards, selected)'
+      ],
+      openLink: function(e, details) {
+        window.location.href = e.currentTarget.link;
+      },
+      updateLinks: function(cards, selected) {
+        this.$.prevButton.disabled=true;
+        this.$.nextButton.disabled=true;
+
+        var selected_index = cards.indexOf(selected);
+        if(selected_index > 0) {
+          this.set("prevCard", cards[selected_index-1]);
+          this.$.prevButton.disabled=false;
+        }
+        if(selected_index < cards.length-1) {
+          this.set("postCard", cards[selected_index+1]);
+          this.$.nextButton.disabled=false;
+        }
+      }
+    });
+  </script>
+</dom-module>

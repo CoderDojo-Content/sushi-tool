@@ -1,0 +1,87 @@
+<link rel="import" href="./bower_components/polymer/polymer.html">
+<link rel="import" href="./bower_components/paper-toolbar/paper-toolbar.html">
+<link rel="import" href="./bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="./bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="./bower_components/paper-icon-button/paper-icon-button.html">
+
+
+<link rel="import" href="./elements/sushi-pages-browser.html">
+<link rel="import" href="./elements/sushi-pages-menu.html">
+
+<dom-module id="chopsticks-toolbar">
+
+  <template>
+    <style>
+      :host {
+        position: absolute;
+        z-index: 100;
+
+        --paper-toolbar-title {
+          margin-left: 5px !important;
+        };
+      }
+      paper-toolbar {
+        --paper-toolbar-height: 35px;
+        --paper-toolbar-background: rgba(0, 0, 0, 0.5);;
+      }
+
+      paper-toolbar.bottom {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+      }
+
+      a {
+        color: rgba(255,255,255, 0.9);
+      }
+
+      div.title {
+        margin-left: 10px !important;
+      }
+
+    </style>
+
+    <iron-ajax
+      auto
+      url="/sushi-services/cards"
+      handle-as="json"
+      last-response="{{cards}}"
+      debounce-duration="300"></iron-ajax>
+
+
+    <paper-toolbar class="bottom" justify="start" bottomJustify="start">
+      <sushi-pages-menu cards="{{cards}}" selected="{{current_card}}"></sushi-pages-menu>
+      <div class="title">{{current_card.card_number}} - {{current_card.title}}</div>
+      <paper-icon-button icon="refresh" on-tap="refreshPage"></paper-icon-button>
+      <sushi-pages-browser cards="{{cards}}" selected="{{current_card}}"></sushi-pages-browser>
+    </paper-toolbar>
+  </template>
+
+  <script>
+    Polymer({
+      is: "chopsticks-toolbar",
+      properties: {
+        cards: {
+          type: Array,
+          notify: true
+        }
+      },
+      observers: [
+        'updatedCards(cards)'
+      ],
+      updatedCards: function(cards) {
+        var pathname = window.location.pathname;
+        var filename = pathname.match(/\/sushi\/(.*)/)[1];
+
+        var current_card = cards.find((card) => { return card.filename === filename; } );
+        console.log("Current card is %j", current_card);
+        this.set("current_card", current_card);
+      },
+      refreshPage: function() {
+        location.reload();
+      }
+    });
+  </script>
+
+</dom-module>

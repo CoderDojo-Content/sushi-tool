@@ -8,7 +8,12 @@
 		"merge": "Combina los pdfs en uno solo (requiere herramienta PDFUnite)",
 		"pdf": "Exporta tus tarjetas a pdf en el directorio indicado",
 		"scan": "Comprueba si hay archivos de configuración en el directorio actual",
-		"sync": "Actualiza la configuración a partird de las tarjetas existentes"
+		"sync": "Actualiza la configuración a partird de las tarjetas existentes",
+		"liveoption": {
+			"nolivereload": "No inicia el modo 'livereload'",
+			"nobrowser": "No abre el navegador automáticamente",
+			"notoolbar": "No inicia la barra de chopsticks en el modo live"
+		}
 	},
 	"sushi": {
 		"difficulty": {

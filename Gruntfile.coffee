@@ -21,6 +21,10 @@ module.exports =  ->
         dest: 'lib/'
         ext: '.js'
     watch:
+      polymer:
+        files: 'webtool/**/*.html'
+        options: 
+          livereload: true
       coffee:
         files: 'src/**/*.coffee'
         tasks: ['build']
