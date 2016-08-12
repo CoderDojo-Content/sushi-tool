@@ -1,38 +1,188 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/paper-toolbar/paper-toolbar.html">
 <link rel="import" href="../bower_components/paper-menu-button/paper-menu-button.html">
 <link rel="import" href="../bower_components/paper-menu/paper-menu.html">
 <link rel="import" href="../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../bower_components/paper-dialog/paper-dialog.html">
+<link rel="import" href="../bower_components/paper-ripple/paper-ripple.html">
+<link rel="import" href="../bower_components/iron-pages/iron-pages.html">
+<link rel="import" href="../bower_components/iron-icons/editor-icons.html">
+<link rel="import" href="../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html">
+<link rel="import" href="../bower_components/neon-animation/animations/scale-up-animation.html">
+<link rel="import" href="../bower_components/neon-animation/animations/fade-out-animation.html">
+<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
+<link rel="import" href="../bower_components/Sortable/Sortable.html">
 
 <dom-module id="sushi-pages-menu">
   <template>
     <style>
-      paper-item {
-        font-size: 0.7em;
-        --paper-item-min-height: 20px;
+      :host paper-dialog {
+        min-width: 600px;
       }
-      paper-menu {
-        --paper-menu-background-color: rgba(0, 0, 0, 0.5);
-        --paper-menu-color: rgba(255, 255, 255, 0.9);
+      :host div.list-item {
+        @apply(--layout-horizontal);
+        padding: 10px;
+        position: relative;
       }
-      paper-icon-button {
-        margin-right: 0px !important;
+      :host div.cardnumber {
+        @apply(--layout-flex);
+        @apply(--layout-self-center);
       }
-      a {
-        color: rgba(255,255,255, 0.9);
+      :host div.cardtitle {
+        @apply(--layout-flex-6);
       }
+      :host div.options {
+        @apply(--layout-flex-2);
+        @apply(--layout-self-center);
+      }
+      :host div.options .tools {
+        min-width: 100px;
+        text-align: right;
+        font-size: 0.8em;
+        @apply(--layout-horizontal);
+        @aplly(--layout-around-justified);
+      }
+      :host div.options .tools .option {
+        @apply(--layout-flex);
+      }
+      :host iron-icon {
+        color: var(--google-grey-700);
+      }
+
+      :host div.list-item.active {
+        background-color: var(--google-grey-300);
+      }
+
+      :host .sortable-chosen {
+        background-color: var(--paper-indigo-300) !important;
+        color: var(--google-grey-100);
+      }
+      :host .sortable-ghost {
+        background-color: var(--paper-grey-300) !important;
+        background:
+        repeating-linear-gradient(
+          -45deg,
+          rgba(0, 0, 0, 0.2),
+          rgba(0, 0, 0, 0.2) 5px,
+          rgba(0, 0, 0, 0.3) 5px,
+          rgba(0, 0, 0, 0.3) 10px
+        );
+        min-height: 40px;
+        opacity: 0.3;
+      }
+      :host .sortable-ghost div {
+        display: none;
+      }
+      :host paper-input {
+        margin-top: -8px;
+        --paper-input-container: {
+            padding: 0;
+        };
+      }
+      :host paper-input .paper-input-container-0 {
+        padding: 0px;
+      }
+
     </style>
-    <paper-menu-button dynamic-align="true" vertical-offset="35" no-animations>
-      <paper-icon-button icon="menu" class="dropdown-trigger"></paper-icon-button>
-      <paper-menu class="dropdown-content" selected="{{selected.card_number}}" attr-for-selected="number">
-        <template is="dom-repeat" items={{cards}}>
-          <paper-item number="{{item.card_number}}"><a href="./{{item.filename}}">{{item.card_number}} - {{item.title}}</a></paper-item>
-        </template>
-      </paper-menu>
-    </paper-menu-button>
+    <iron-ajax id="ajaxPost" body="{{cards}}" url="/sushi-services/cards" method="POST" content-type="application/json" on-response="_refresh"></iron-ajax>
+    <paper-dialog id="dialog" entry-animation="scale-up-animation" exit-animation="fade-out-animation"
+      auto-fit-on-attach="true" with-backdrop>
+      <h2>Sushi cards</h2>
+      <paper-dialog-scrollable>
+        <div class="items-list">
+          <sortable-js handle=".dragger" on-update="onUpdate">
+            <template is="dom-repeat" items={{cards}}>
+              <div class$="list-item {{checkActive(item.card_number)}}">
+                <div class="cardnumber">{{item.card_number}}</div>
+                <div class="cardtitle">
+                  <div hidden$="{{!_editingItem(item, editingItem)}}">
+                    <paper-input value="{{item.title}}" stop-keyboard-event-propagation label="Card title"></paper-input>
+                  </div>
+                  <div hidden$="{{_editingItem(item, editingItem)}}">
+                    {{item.title}}
+                  </div>
+                </div>
+                <div class="options">
+                  <div class="tools">
+                    <div class="option" on-tap="setEditing" item="{{item}}" hidden$="{{_editingItem(item, editingItem)}}">
+                      <paper-ripple></paper-ripple>
+                      <iron-icon icon="editor:mode-edit"></iron-icon>
+                    </div>
+                    <div class="option" on-tap="stopEditing" hidden$="{{!_editingItem(item, editingItem)}}">
+                      <paper-ripple></paper-ripple>
+                      <iron-icon icon="icons:check"></iron-icon>
+                    </div>
+                    <div class="option" href="./{{item.filename}}" on-tap="loadPage">
+                      <paper-ripple></paper-ripple>
+                      <iron-icon icon="editor:insert-link"></iron-icon>
+                    </div>
+                    <div class="option dragger">
+                      <paper-ripple></paper-ripple>
+                      <iron-icon icon="editor:drag-handle"></iron-icon>
+                    </div>
+                  </div>
+                </div>
+              </paper-item>
+            </template>
+          </sortable-js>
+        </div>
+      </paper-dialog-scrollable>
+      <div class="buttons">
+        <paper-button raised on-tap="saveChanges" id="eventsDemoSubmit">
+          <paper-spinner id="spinner" hidden></paper-spinner>Save changes
+        </paper-button>
+      </div>
+    </paper-dialog>
   </template>
   <script>
     Polymer({
-      is: 'sushi-pages-menu'
+      is: 'sushi-pages-menu',
+      properties: {
+        cards: {
+          type: Array,
+          notify: true
+        },
+        editingItem: {
+          type: Object
+        }
+      },
+      ready: function() {
+        this.editingItem = null;
+      },
+      openDialog: function() {
+        this.$.dialog.open();
+      },
+      loadPage: function(e) {
+        window.location.href = e.currentTarget.href;
+      },
+      checkActive: function(number) {
+        return number === this.selected.card_number ? "active" : "";
+      },
+      onUpdate: function(evt,detail) {
+        if(detail) {
+          this.cards.map(function(element, index){
+            element.card_number = (index+1);
+          });
+        }
+      },
+      saveChanges: function(e){
+        this.$.ajaxPost.generateRequest();
+      },
+      _refresh: function(e){
+        // this.$.ajaxGet.generateRequest();
+        window.location.reload()
+      },
+      _editingItem: function(item, editingItem) {
+        return item == editingItem;
+      },
+      setEditing: function(e) {
+        this.set('editingItem', e.currentTarget.item);
+      },
+      stopEditing: function() {
+        this.set('editingItem', null);
+      }
+
     });
   </script>
 </dom-module>

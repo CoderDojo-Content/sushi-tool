@@ -1,0 +1,92 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/paper-toolbar/paper-toolbar.html">
+<link rel="import" href="../bower_components/paper-menu-button/paper-menu-button.html">
+<link rel="import" href="../bower_components/paper-menu/paper-menu.html">
+<link rel="import" href="../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../bower_components/paper-dialog/paper-dialog.html">
+<link rel="import" href="../bower_components/iron-pages/iron-pages.html">
+<link rel="import" href="../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../bower_components/paper-input/paper-textarea.html">
+<link rel="import" href="../bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html">
+<link rel="import" href="../bower_components/neon-animation/animations/scale-up-animation.html">
+<link rel="import" href="../bower_components/neon-animation/animations/fade-out-animation.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
+
+
+<dom-module id="sushi-toolset-dialog">
+  <template>
+    <style include="iron-flex iron-flex-alignment">
+      :host paper-dialog {
+        min-width: 400px;
+        max-width: 600px;
+      }
+      :host paper-toolbar {
+        margin-top: 0px !important;
+      }
+      :host paper-dialog-scrollable {
+        margin-top: 0px !important;
+      }
+      :host .main_field {
+        @apply(--layout-flex);
+        padding-right: 15px;
+      }
+    </style>
+    <iron-ajax
+      auto
+      id="ajaxGet"
+      url="/sushi-services/series"
+      handle-as="json"
+      last-response="{{series}}"
+      debounce-duration="300"></iron-ajax>
+
+    <iron-ajax id="ajaxPost" body="{{series}}" url="/sushi-services/series" method="POST" content-type="application/json" on-response="_refresh"></iron-ajax>
+
+    <paper-dialog id="dialog" entry-animation="scale-up-animation" exit-animation="fade-out-animation"
+      auto-fit-on-attach="true" with-backdrop>
+      <h2>Sushi Card series details</h2>
+      <paper-dialog-scrollable>
+        <div class="layout horizontal wrap">
+          <paper-input class="main_field" label="Series Title" stop-keyboard-event-propagation value="{{series.series_title}}" ></paper-input>
+          <paper-input label="Subject" value="{{series.subject}}" stop-keyboard-event-propagation></paper-input>
+        </div>
+        <paper-textarea label="Description" stop-keyboard-event-propagation value="{{series.description}}" ></paper-textarea>
+        <div class="layout horizontal wrap">
+          <div class="main_field">
+            <paper-input  label="Author" value="{{series.author}}" stop-keyboard-event-propagation></paper-input>
+          </div>
+          <paper-input label="Twitter" value="{{series.twitter}}" stop-keyboard-event-propagation></paper-input>
+        </div>
+        <paper-input label="Website" value="{{series.website}}" stop-keyboard-event-propagation></paper-input>
+
+
+      </paper-dialog-scrollable>
+      <div class="buttons">
+        <paper-button raised on-tap="sendForm" id="eventsDemoSubmit">
+          <paper-spinner id="spinner" hidden></paper-spinner>Submit
+        </paper-button>
+      </div>
+    </paper-dialog>
+  </template>
+  <script>
+    Polymer({
+      is: 'sushi-toolset-dialog',
+      ready: function() {
+
+      },
+      openDialog: function() {
+        this.$.dialog.open();
+      },
+      loadPage: function(e) {
+        window.location.href = e.currentTarget.href;
+      },
+      sendForm: function(e) {
+        this.$.ajaxPost.generateRequest();
+      },
+      _refresh: function(e){
+        // this.$.ajaxGet.generateRequest();
+        window.location.reload()
+      }
+    });
+  </script>
+</dom-module>

@@ -3,26 +3,39 @@
 <link rel="import" href="./bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="./bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="./bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="./bower_components/paper-fab/paper-fab.html">
+<link rel="import" href="./bower_components/iron-a11y-keys-behavior/iron-a11y-keys-behavior.html">
 
-
-<link rel="import" href="./elements/sushi-pages-browser.html">
 <link rel="import" href="./elements/sushi-pages-menu.html">
+<link rel="import" href="./elements/sushi-card-info.html">
+<link rel="import" href="./elements/paper-fab-menu.html">
+<link rel="import" href="./elements/sushi-toolset-dialog.html">
 
 <dom-module id="chopsticks-toolbar">
 
   <template>
     <style>
       :host {
-        position: absolute;
-        z-index: 100;
-
+        zoom: 1 !important;
         --paper-toolbar-title {
           margin-left: 5px !important;
         };
       }
+      paper-fab.blue {
+        --paper-fab-background: var(--paper-light-blue-500);
+        --paper-fab-keyboard-focus-background: var(--paper-light-blue-900);
+      }
+
+
+      paper-fab-menu.bottom {
+        position: fixed;
+        right: 16px;
+        bottom: 10px;
+      }
+
       paper-toolbar {
-        --paper-toolbar-height: 35px;
-        --paper-toolbar-background: rgba(0, 0, 0, 0.5);;
+        --paper-toolbar-height: 40px;
+        --paper-toolbar-background: rgba(0, 0, 0, 0.5);
       }
 
       paper-toolbar.bottom {
@@ -30,10 +43,6 @@
         bottom: 0;
         left: 0;
         right: 0;
-      }
-
-      a {
-        color: rgba(255,255,255, 0.9);
       }
 
       div.title {
@@ -49,13 +58,26 @@
       last-response="{{cards}}"
       debounce-duration="300"></iron-ajax>
 
+    <sushi-card-info id="sushiCardInfo" card="{{currentCard}}"></sushi-card-info>
+    <sushi-pages-menu id="sushiCardsMenu" cards="{{cards}}" selected="{{currentCard}}"></sushi-pages-menu>
+    <sushi-toolset-dialog id="sushiToolsetDialog" cards="{{cards}}" selected="{{currentCard}}"></sushi-toolset-dialog>
 
-    <paper-toolbar class="bottom" justify="start" bottomJustify="start">
-      <sushi-pages-menu cards="{{cards}}" selected="{{current_card}}"></sushi-pages-menu>
-      <div class="title">{{current_card.card_number}} - {{current_card.title}}</div>
-      <paper-icon-button icon="refresh" on-tap="refreshPage"></paper-icon-button>
-      <sushi-pages-browser cards="{{cards}}" selected="{{current_card}}"></sushi-pages-browser>
-    </paper-toolbar>
+    <iron-a11y-keys target="[[button]]" keys="right"
+                on-keys-pressed="openLink"></iron-a11y-keys>
+
+    <paper-fab-menu src="./img/toolbar.png" position="vertical" class="bottom" color="black">
+      <paper-fab-menu-item on-tap="openToolsetDialog" label="Serie Info" icon="icons:build" color="black"></paper-fab-menu-item>
+			<paper-fab-menu-item on-tap="openMenuDialog" label="Sushi Cards" icon="menu" color="black"></paper-fab-menu-item>
+      <paper-fab-menu-item id="prevButton" hidden="{{!displayPrev}}" on-tap="openLink" label="Prev SushiCard" icon="chevron-left" color="black"></paper-fab-menu-item>
+      <paper-fab-menu-item id="nextButton" hidden="{{!displayNext}}" on-tap="openLink" label="Next SushiCard" icon="chevron-right" color="black"></paper-fab-menu-item>
+		</paper-fab-menu>
+
+
+    <!-- <paper-toolbar class="bottom" justify="start" bottomJustify="start">
+      <sushi-pages-menu cards="{{cards}}" selected="{{currentCard}}"></sushi-pages-menu>
+      <div class="title">{{selected.card_number}} - {{currentCard.title}}</div>
+      <sushi-card-info card="{{currentCard}}"></sushi-card-info>
+    </paper-toolbar> -->
   </template>
 
   <script>
@@ -65,21 +87,87 @@
         cards: {
           type: Array,
           notify: true
+        },
+        currentCard: {
+          type: Object
+        },
+        button: {
+          type: Object,
+          value: function() {
+            return this.$.nextButton;
+          }
+        },
+        keyEventTarget: {
+          type: Object,
+          value: function() {
+            return document.body;
+          }
         }
       },
-      observers: [
-        'updatedCards(cards)'
+      behaviors: [
+        Polymer.IronA11yKeysBehavior
       ],
+      keyBindings: {
+         'right': '_nextPage', // same as 'space:keydown'
+         'left': '_prevPage',
+      },
+      _nextPage: function(event) {
+          if(this.displayNext) {
+            this.$.nextButton.fire('tap');
+          }
+      },
+      _prevPage: function(event) {
+          if(this.displayPrev) {
+            this.$.prevButton.fire('tap');
+          }
+      },
+      _updatePressed: function(event) {
+        console.log(event.detail);
+      },
+      observers: [
+        'updatedCards(cards)',
+        'updateLinks(cards, currentCard)'
+      ],
+      init: function() {
+        this.displayPrev = false;
+        this.displayNext = false;
+      },
       updatedCards: function(cards) {
+        console.log("Updated!!");
         var pathname = window.location.pathname;
         var filename = pathname.match(/\/sushi\/(.*)/)[1];
 
         var current_card = cards.find((card) => { return card.filename === filename; } );
-        console.log("Current card is %j", current_card);
-        this.set("current_card", current_card);
+        this.currentCard = current_card;
       },
       refreshPage: function() {
         location.reload();
+      },
+      openLink: function(e, details) {
+        window.location.href = e.currentTarget.link;
+      },
+      openInfoDialog: function(e, details) {
+          this.$.sushiCardInfo.openDialog();
+      },
+      openMenuDialog: function(e, details) {
+          this.$.sushiCardsMenu.openDialog();
+      },
+      openToolsetDialog:function() {
+          this.$.sushiToolsetDialog.openDialog();
+      },
+      updateLinks: function(cards, currentCard) {
+        this.displayPrev = false;
+        this.displayNext = false;
+
+        var selected_index = cards.indexOf(currentCard);
+        if(selected_index > 0) {
+          this.$.prevButton.link = "./" + cards[selected_index-1].filename
+          this.displayPrev = true;
+        }
+        if(selected_index < cards.length-1) {
+          this.$.nextButton.link = "./" + cards[selected_index+1].filename
+          this.displayNext = true;
+        }
       }
     });
   </script>

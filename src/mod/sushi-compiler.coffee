@@ -6,7 +6,8 @@ async = require "async"
 open  = require "open"
 glob  = require "glob"
 os    = require "os"
-livereload    = require('livereload');
+bodyParser = require "body-parser"
+livereload    = require('livereload')
 port  = 9080
 webPrefix     = "http://localhost:#{port}/"
 
@@ -59,6 +60,7 @@ module.exports =
         if loadToolbar
           # Polymer toolbar
           app.use("/webtool/", express.static(webtool_dir))
+          app.use(bodyParser.json())
           app.use("/sushi-services/", require("./sushi-webtool-service.js")(sushiSet))
           app.use(require('connect-inject')
             runAll: true
