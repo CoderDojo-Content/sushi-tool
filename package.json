@@ -1,6 +1,6 @@
 {
   "name": "sushi-tool",
-  "version": "0.2.0",
+  "version": "0.3.1",
   "description": "Tool to generate CoderDojo sushi templates",
   "main": "lib/sushi-tool.js",
   "scripts": {

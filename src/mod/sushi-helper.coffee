@@ -6,7 +6,7 @@ wizard = require './sushi-wizards.js'
 async = require 'async'
 
 class SushiSet
-  SET_TITLE = "serie_title"
+  SET_TITLE = "series_title"
   DESCRIPTION = "description"
   SUBJECT = "subject"
   LANGUAGE = "language"
@@ -18,8 +18,7 @@ class SushiSet
 
   constructor: (json_object) ->
     if json_object?.hasOwnProperty(SET_TITLE)
-      @serie_title = json_object[SET_TITLE]
-
+      @series_title = json_object[SET_TITLE]
     @language = /([a-z]*)/.exec(process.env.LANG)[0]
     if json_object?.hasOwnProperty(LANGUAGE)
       @language = json_object[LANGUAGE]
@@ -70,7 +69,7 @@ class SushiSet
 
     for key of configuration
       js_sushicard = configuration[key]
-      @serie_title = js_sushicard.series_title
+      @series_title = js_sushicard.series_title
       @subject = js_sushicard.language
 
       card = new SushiCard()
@@ -84,6 +83,12 @@ class SushiSet
 
   createMarkdownData: ->
     datajson = {}
+
+    author_data =
+      name: @author
+      twitter: @twitter.match(/(\w+)/)[1]
+      website: @website
+
     for sushi in @cards
       datajson[sushi.filename] =
         title: sushi.title
@@ -93,7 +98,11 @@ class SushiSet
         level: sushi.level
         card_number: sushi.card_number
         series_total_cards: @cards.length
-        series_title: @serie_title
+        series_title: @series_title
+
+      if @author
+        datajson[sushi.filename].author = author_data
+
     datajson
   addNewCardWizard: (callback) ->
     card = new SushiCard()
