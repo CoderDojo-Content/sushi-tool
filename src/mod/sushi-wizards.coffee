@@ -5,11 +5,11 @@ module.exports =
   askDataInSushiSet: (sushiSet, askOnlyIfMissing, callback) ->
     questions = [
           type: 'input'
-          name: 'serie_title'
+          name: 'series_title'
           message: __('newSushi.series_title')
-          when: -> !askOnlyIfMissing || !sushiSet.serie_title?
+          when: -> !askOnlyIfMissing || !sushiSet.series_title?
           default: ->
-            sushiSet.serie_title
+            sushiSet.series_title
         ,
           type: 'input'
           name: 'description'
@@ -61,7 +61,7 @@ module.exports =
 
     inquirer.prompt questions
     .then (answers)->
-      sushiSet.serie_title = answers.serie_title ? sushiSet.serie_title
+      sushiSet.series_title = answers.series_title ? sushiSet.series_title
       sushiSet.description = answers.description ? sushiSet.description
       sushiSet.subject = answers.subject ? sushiSet.subject
       sushiSet.difficulty = answers.difficulty ? sushiSet.difficulty
@@ -75,7 +75,7 @@ module.exports =
   newSushi: (callback) ->
     questions = [
           type: 'input'
-          name: 'serie_title'
+          name: 'series_title'
           message: __('newSushi.series_title')
         ,
           type: 'input'

@@ -1,11 +1,10 @@
 {
   "name": "sushi-tool",
-  "version": "0.3.1",
+  "version": "0.3.3",
   "description": "Tool to generate CoderDojo sushi templates",
   "main": "lib/sushi-tool.js",
   "scripts": {
-    "postinstall": "sh .postInstall.sh",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "postinstall": "sh .postInstall.sh"
   },
   "keywords": [
     "chopsticks",
@@ -30,7 +29,8 @@
     "grunt": "^1.0.1",
     "grunt-banner": "^0.6.0",
     "grunt-contrib-coffee": "^1.0.0",
-    "grunt-contrib-watch": "^1.0.0"
+    "grunt-contrib-watch": "^1.0.0",
+    "mocha": "^3.0.2"
   },
   "dependencies": {
     "async": "^2.0.1",

@@ -169,7 +169,7 @@ module.exports =
     else
       wizard.newSushi (data) ->
         sushi = new SushiSet()
-        sushi.serie_title = data.serie_title
+        sushi.series_title = data.series_title
         sushi.description = data.description
         sushi.subject = data.subject
         sushi.difficulty = data.difficulty ? data.difficulty

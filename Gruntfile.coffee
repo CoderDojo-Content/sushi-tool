@@ -13,7 +13,7 @@ module.exports =  ->
       compile:
         files:
           'lib/sushi-tool.js': 'src/sushi-tool.coffee'
-      glob_to_multiple:
+      tool_project:
         expand: true
         flatten: false
         cwd: 'src/'
@@ -23,7 +23,7 @@ module.exports =  ->
     watch:
       polymer:
         files: 'webtool/**/*.html'
-        options: 
+        options:
           livereload: true
       coffee:
         files: 'src/**/*.coffee'
