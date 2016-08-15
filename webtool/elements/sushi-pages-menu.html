@@ -83,16 +83,26 @@
       :host paper-input .paper-input-container-0 {
         padding: 0px;
       }
+      :host .float-options {
+        display: block;
+        position: absolute;
+        top: 0px;
+        right: 5px;
+        color: black;
+      }
 
     </style>
     <iron-ajax id="ajaxPost" body="{{cards}}" url="/sushi-services/cards" method="POST" content-type="application/json" on-response="_refresh"></iron-ajax>
     <paper-dialog id="dialog" entry-animation="scale-up-animation" exit-animation="fade-out-animation"
       auto-fit-on-attach="true" with-backdrop>
       <h2>Sushi cards</h2>
+      <div class="float-options">
+        <paper-icon-button icon="icons:add" alt="Add sushi card" on-tap="addNewCard"></paper-icon-button>
+      </div>
       <paper-dialog-scrollable>
         <div class="items-list">
           <sortable-js handle=".dragger" on-update="onUpdate">
-            <template is="dom-repeat" items={{cards}}>
+            <template id="listOfCards" is="dom-repeat" items={{cards}}>
               <div class$="list-item {{checkActive(item.card_number)}}">
                 <div class="cardnumber">{{item.card_number}}</div>
                 <div class="cardtitle">
@@ -180,8 +190,21 @@
       },
       stopEditing: function() {
         this.set('editingItem', null);
-      }
+      },
+      addNewCard: function() {
+        var len = this.cards.length;
+        var card_number = len + 1;
+        var filename = "" + card_number;
 
+        if(card_number < 10) {
+          filename = "0" + filename;
+        }
+        this.push('cards', {
+          "title": "New card",
+          "card_number": card_number,
+          "filename": filename
+        });
+      }
     });
   </script>
 </dom-module>

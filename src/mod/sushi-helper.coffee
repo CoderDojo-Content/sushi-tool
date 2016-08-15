@@ -52,9 +52,16 @@ class SushiSet
 
   saveSushiJson: ->
     file = path.resolve(global.cwd, "_sushi.json")
+
+    for card in @cards
+      cardfile = path.resolve(global.cwd, "#{card.filename}.md")
+      if !fs.existsSync(cardfile)
+        fs.writeFileSync cardfile, "1. #{card.title}\n"
+
     jsonfile.writeFile file, @, {spaces: 2}, (err) ->
       if err
         console.log(err)
+
 
   createMarkdownDataFile: ->
     data = @createMarkdownData()
@@ -112,7 +119,7 @@ class SushiSet
       @saveAll()
       fs.writeFile
       cardfile = path.resolve(global.cwd, "#{card.filename}.md")
-      fs.writeFile cardfile, "1. \n", (err) ->
+      fs.writeFile cardfile, "1. #{card.title}\n", (err) ->
           if(err)
             console.log(err)
           callback()
