@@ -35,7 +35,7 @@ $ chopsticks init
 
 ![Init command demo](assets/init-command.gif)
 
-### Live command
+### Live mode command
 
 This mode allow you to edit your sushi cards and see the result in your every time you save your file without the need of refreshing it.
 
@@ -44,6 +44,15 @@ $ chopsticks live
 ```
 
 ![Live command demo](assets/live-command.gif)
+
+During the live mode you will se a menu in the right bottom corner. This menu will let you:
+
+* Navigate between pages in you sushi set
+* Change the title of every sushi card
+* Create new sushi cards
+* Configure the information of your Sushi series
+
+![Sushi webtool demo](assets/sushi-webtool.gif)
 
 ### PDF command
 
