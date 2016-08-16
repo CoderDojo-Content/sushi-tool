@@ -107,7 +107,7 @@
                 <div class="cardnumber">{{item.card_number}}</div>
                 <div class="cardtitle">
                   <div hidden$="{{!_editingItem(item, editingItem)}}">
-                    <paper-input value="{{item.title}}" stop-keyboard-event-propagation label="Card title"></paper-input>
+                    <paper-input id$="input{{item.card_number}}" value="{{item.title}}" stop-keyboard-event-propagation label="Card title"></paper-input>
                   </div>
                   <div hidden$="{{_editingItem(item, editingItem)}}">
                     {{item.title}}
@@ -199,11 +199,24 @@
         if(card_number < 10) {
           filename = "0" + filename;
         }
-        this.push('cards', {
+
+        newItem = {
           "title": "New card",
           "card_number": card_number,
           "filename": filename
-        });
+        };
+
+        this.push('cards', newItem);
+
+        this.editingItem = newItem;
+        setTimeout(function(){
+          var el = document.getElementById("input" + newItem.card_number);
+          if (el) {
+            el.$.input.focus();
+            el.$.input.select();
+          }
+        }, 300);
+
       }
     });
   </script>
